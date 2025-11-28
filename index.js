@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // CORS configuration - must be before routes
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://blogfrontend-gules.vercel.app'], // Allow localhost and deployed frontend
+  origin: ['http://localhost:3000', 'https://blogfrontend-g36r.vercel.app'], // Allow localhost and deployed frontends
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With']
@@ -27,6 +27,11 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 
 // Database Connection
+if (!process.env.MONGO_URI) {
+  console.error('FATAL ERROR: MONGO_URI is not defined in environment variables.');
+  process.exit(1);
+}
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.error('MongoDB connection error:', err));
